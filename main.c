@@ -5,6 +5,7 @@ int not(int a);
 int and (int a, int b);
 int or (int a, int b);
 int xor (int a, int b);
+int mux(int a, int b, int s);
 
 int main(void)
 {
@@ -29,4 +30,17 @@ int test(void)
             printf("------------------------------\n");
         }
     }
+    printf("----------MUX TEST------------\n");
+    for (int a = 0; a <= 1; a++)
+    {
+        for (int b = 0; b <= 1; b++)
+        {
+            for (int s = 0; s <= 1; s++)
+            {
+
+                printf("A = %d | B = %d | S = %d | MUX = %d\n", a, b, s, mux(a, b, s));
+            }
+        }
+    }
+    printf("---------END MUX TEST---------\n");
 }
