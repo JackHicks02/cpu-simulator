@@ -2,5 +2,5 @@
 
 int not(int a)
 {
-    return (nand(a, a) & 1);
+    return nand(a, a);
 }
