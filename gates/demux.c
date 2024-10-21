@@ -1,18 +1,15 @@
 #include <stdio.h>
+#include "not.h"
 #include "or.h"
 #include "and.h"
+#include "demux.h"
 
-typedef struct
-{
-    int out1;
-    int out2;
-} DemuxResult;
 
 DemuxResult demux(int in, int sel)
 {
     DemuxResult result = {
-        out1: and(in, sel),
-        out2: or(in, sel)
+        out1: and(in, not(sel)),
+        out2: and(in, sel)
     };
     return result;
 }
