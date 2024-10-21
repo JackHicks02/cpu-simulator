@@ -8,6 +8,9 @@ int or (int a, int b);
 int xor (int a, int b);
 int mux(int a, int b, int s);
 
+//TODO: replace int with this, char is 1 byte...
+typedef signed char byte;
+
 int main(void)
 {
     test();
