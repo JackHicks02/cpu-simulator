@@ -1,18 +1,39 @@
 #!/bin/bash
 
-SOURCE_DIR="./gates"
-OUTPUT_DIR="./targets"
+SOURCE_DIR="./object"
+MAIN_FILE="main.c"
+OUTPUT_FILE="./target/computer"
 
-for source_file in "$SOURCE_DIR"/*.c; do
+# Check if --compile-libs flag is passed
+COMPILE_LIBS=0
 
-    base_name=$(basename "$source_file" .c)
+if [ "$1" = "--compile-libs" ]; then
+    COMPILE_LIBS=1
+fi
+
+if [ $COMPILE_LIBS -eq 1 ]; then
+    echo "Compiling libraries..."
+    ./build-libs.sh
     
-    gcc "$source_file" -o "$OUTPUT_DIR/$base_name"
-    
-    if [ $? -eq 0 ]; then
-        echo "Compiled $source_file successfully!"
-    else
-        echo "Error compiling $source_file"
+    if [ $? -ne 0 ]; then
+        echo "Error compiling libraries."
         exit 1
     fi
-done
+fi
+
+OBJECT_FILES=$(ls $SOURCE_DIR/*.o 2> /dev/null)
+
+if [ -z "$OBJECT_FILES" ]; then
+    echo "No object files found. Please compile the libraries first."
+    exit 1
+fi
+
+
+gcc $MAIN_FILE $OBJECT_FILES -o $OUTPUT_FILE
+
+if [ $? -eq 0 ]; then
+    echo "Build successful! Executable is $OUTPUT_FILE"
+else
+    echo "Build failed."
+    exit 1
+fi
