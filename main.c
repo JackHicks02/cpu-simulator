@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "./gates/demux.h"
 
 int nand(int a, int b);
 int not(int a);
@@ -43,4 +44,15 @@ int test(void)
         }
     }
     printf("---------END MUX TEST---------\n");
+
+    printf("---------DEMUX TEST-----------\n");
+    for (int in = 0; in <= 1; in++)
+    {
+        for (int sel = 0; sel <= 1; sel++)
+        {
+            DemuxResult demuxResult = demux(in, sel);
+            printf("sel = %d | in = %d | out1 = %d | out2 = %d\n", sel, in, demuxResult.out1, demuxResult.out2);
+        }
+    }
+    printf("--------END DEMUX TEST--------\n");
 }
