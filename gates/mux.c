@@ -4,5 +4,5 @@
 
 int mux(int a, int b, int sel)
 {
-    return (or (and(a, not(sel)), and(b, sel)))
+    return (or (and(a, not(sel)), and(b, sel)));
 }
