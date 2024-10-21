@@ -4,6 +4,7 @@ int nand(int a, int b);
 int not(int a);
 int and (int a, int b);
 int or (int a, int b);
+int xor (int a, int b);
 
 int main(void)
 {
@@ -23,7 +24,8 @@ int test(void)
             printf("NAND of %d and %d is %d\n", a, b, nand(a, b));
             printf("NOT of %d and is %d\n", a, not(a));
             printf("AND of %d and %d is %d\n", a, b, and(a, b));
-            printf("OR of %d and %d is %d\n", a, b, or(a, b));
+            printf("OR of %d and %d is %d\n", a, b, or (a, b));
+            printf("XOR of %d and %d is %d\n", a, b, xor(a, b));
             printf("------------------------------\n");
         }
     }
