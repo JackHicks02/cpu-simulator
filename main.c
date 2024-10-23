@@ -1,11 +1,11 @@
 #include <stdio.h>
-
-int nand(int a, int b);
-int not(int a);
-int and (int a, int b);
-int or (int a, int b);
-int xor (int a, int b);
-int mux(int a, int b, int s);
+#include "./gates/and.h"
+#include "./gates/demux.h"
+#include "./gates/mux.h"
+#include "./gates/nand.h"
+#include "./gates/not.h"
+#include "./gates/or.h"
+#include "./gates/xor.h"
 
 //TODO: replace int with this, char is 1 byte...
 typedef signed char byte;
@@ -19,6 +19,9 @@ int main(void)
 
 int test(void)
 {
+    printf("------------------------------\n");
+    printf("size of int %ldbytes | %ldbit\n", sizeof(int), sizeof(int)*8);
+    printf("------------------------------\n");
     for (int a = 0; a <= 1; a++)
     {
         for (int b = 0; b <= 1; b++)
