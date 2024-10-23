@@ -53,8 +53,8 @@ int test(void)
     {
         for (int sel = 0; sel <= 1; sel++)
         {
-            DemuxResult demuxResult = demux(in, sel);
-            printf("sel = %d | in = %d | out1 = %d | out2 = %d\n", sel, in, demuxResult.out1, demuxResult.out2);
+            int demuxResult = demux(in, sel);
+            printf("sel = %d | in = %d | out1 = %d | out2 = %d\n", sel, in,  demuxResult & 1, (demuxResult >> 1 ) & 1);
         }
     }
     printf("--------END DEMUX TEST--------\n");

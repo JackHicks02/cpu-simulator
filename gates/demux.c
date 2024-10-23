@@ -4,12 +4,14 @@
 #include "and.h"
 #include "demux.h"
 
-
-DemuxResult demux(int in, int sel)
+int demux(int in, int sel)
 {
-    DemuxResult result = {
-        out1: and(in, not(sel)),
-        out2: and(in, sel)
-    };
-    return result;
+    // DemuxResult result = {
+    //     out1: and(in, not(sel)),
+    //     out2: and(in, sel)
+    // };
+
+    int out1 = and(in, not(sel));
+    int out2 = and(in, sel);
+    return(out1 + (out2<< 1));
 }
