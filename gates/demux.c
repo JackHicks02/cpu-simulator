@@ -13,5 +13,5 @@ int demux(int in, int sel)
 
     int out1 = and(in, not(sel));
     int out2 = and(in, sel);
-    return(out1 + (out2<< 1));
+    return (out1 + (out2 << 1));
 }
