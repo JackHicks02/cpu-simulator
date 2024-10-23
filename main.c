@@ -1,11 +1,5 @@
 #include <stdio.h>
-#include "./gates/and.h"
-#include "./gates/demux.h"
-#include "./gates/mux.h"
-#include "./gates/nand.h"
-#include "./gates/not.h"
-#include "./gates/or.h"
-#include "./gates/xor.h"
+#include "./gates/gates.h"
 
 //TODO: replace int with this, char is 1 byte...
 typedef signed char byte;
