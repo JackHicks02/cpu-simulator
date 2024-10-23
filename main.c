@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include "./gates/demux.h"
 
 int nand(int a, int b);
 int not(int a);
