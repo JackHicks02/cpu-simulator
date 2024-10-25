@@ -1,20 +1,13 @@
 #include <stdio.h>
 #include "./gates/gates.h"
 
-//TODO: replace int with this, char is 1 byte...
+// TODO: replace int with this, char is 1 byte...
 typedef signed char byte;
 
-int main(void)
-{
-    test();
-
-    return 0;
-}
-
-int test(void)
+void test(void)
 {
     printf("------------------------------\n");
-    printf("size of int %ldbytes | %ldbit\n", sizeof(int), sizeof(int)*8);
+    printf("size of int %ldbytes | %ldbit\n", sizeof(int), sizeof(int) * 8);
     printf("------------------------------\n");
     for (int a = 0; a <= 1; a++)
     {
@@ -30,6 +23,7 @@ int test(void)
             printf("------------------------------\n");
         }
     }
+
     printf("----------MUX TEST------------\n");
     for (int a = 0; a <= 1; a++)
     {
@@ -37,7 +31,6 @@ int test(void)
         {
             for (int s = 0; s <= 1; s++)
             {
-
                 printf("A = %d | B = %d | S = %d | MUX = %d\n", a, b, s, mux(a, b, s));
             }
         }
@@ -50,8 +43,14 @@ int test(void)
         for (int sel = 0; sel <= 1; sel++)
         {
             int demuxResult = demux(in, sel);
-            printf("sel = %d | in = %d | out1 = %d | out2 = %d\n", sel, in,  demuxResult & 1, (demuxResult >> 1 ) & 1);
+            printf("sel = %d | in = %d | out1 = %d | out2 = %d\n", sel, in, demuxResult & 1, (demuxResult >> 1) & 1);
         }
     }
     printf("--------END DEMUX TEST--------\n");
+}
+
+int main(void)
+{
+    test();
+    return 0;
 }
