@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "demux.h": "c"
+        "demux.h": "c",
+        "getbit.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "./gates/gates.h"
+#include "./utils/getbit.h"
 
 // TODO: replace int with this, char is 1 byte...
 typedef signed char byte;
@@ -46,6 +47,9 @@ void test(void)
             printf("sel = %d | in = %d | out1 = %d | out2 = %d\n", sel, in, demuxResult & 1, (demuxResult >> 1) & 1);
         }
     }
+    printf("--------END DEMUX TEST--------\n");
+    printf("---------NOT 16-----------\n");
+    printf("%d\n", not16(45));
     printf("--------END DEMUX TEST--------\n");
 }
 

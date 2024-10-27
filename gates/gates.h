@@ -16,4 +16,6 @@ int mux(int a, int b, int s);
 
 int xor(int in, int sel);
 
+int not16(int in);
+
 #endif
