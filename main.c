@@ -49,7 +49,7 @@ void test(void)
     }
     printf("--------END DEMUX TEST--------\n");
     printf("---------NOT 16-----------\n");
-    printf("%d\n", not16(45));
+    printf("%d\n", not16(0b110101));
     printf("--------END DEMUX TEST--------\n");
 }
 
