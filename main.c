@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "./gates/gates.h"
 #include "./utils/get_bit.h"
+#include "./utils/print_binary.h"
 
 // TODO: replace int with this, char is 1 byte...
 typedef signed char byte;
@@ -49,7 +50,7 @@ void test(void)
     }
     printf("--------END DEMUX TEST--------\n");
     printf("---------NOT 16-----------\n");
-    printf("%d\n", not16(0b110101));
+    print_binary(not16(0b110101), 16);
     printf("--------END DEMUX TEST--------\n");
 }
 
