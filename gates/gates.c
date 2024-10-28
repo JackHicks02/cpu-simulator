@@ -1,4 +1,4 @@
-#include "../utils/getbit.h"
+#include "../utils/get_bit.h"
 #include <stdio.h>
 
 int nand(int a, int b)
@@ -51,7 +51,7 @@ int not16(int in)
     int out = 0;
     for (int i = 0; i < 16; i++)
     {
-        int bit = not(getBit(in, i));
+        int bit = not(get_bit(in, i));
         out |= (bit << i);
     }
     return out;

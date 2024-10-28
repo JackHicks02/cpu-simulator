@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "./gates/gates.h"
-#include "./utils/getbit.h"
+#include "./utils/get_bit.h"
 
 // TODO: replace int with this, char is 1 byte...
 typedef signed char byte;
