@@ -18,4 +18,8 @@ int gate_xor(int in, int sel);
 
 int gate_not16(int in);
 
+int gate_or16(int a, int b);
+
+int gate_and16(int a, int b);
+
 #endif

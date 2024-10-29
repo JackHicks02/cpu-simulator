@@ -45,10 +45,20 @@ int gate_not16(int in) {
   return out;
 }
 
+
 int gate_or16(int a, int b) {
   int out = 0;
   for (int i = 0; i < 16; i++) {
-    int bit = gate_or((get_bit(a, i)), get_bit(a, i));
+    int bit = gate_or((get_bit(a, i)), get_bit(b, i));
+    out |= (bit << i);
+  }
+  return out;
+}
+
+int gate_and16(int a, int b) {
+  int out = 0;
+  for (int i = 0; i < 16; i++) {
+    int bit = gate_and((get_bit(a, i)), get_bit(b, i));
     out |= (bit << i);
   }
   return out;

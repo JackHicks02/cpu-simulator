@@ -76,6 +76,24 @@ int test_gate_or16() {
   return 1;
 }
 
+int test_gate_and16() {
+  for (int a = 0; a <= 0xFF; a++) {
+    for (int b = 0; b <= 0xFF; b++) {
+      if (gate_and16(a, b) != ((a & b) & 0xFFFF)) {
+        return 0;
+      }
+    }
+  }
+  for (int a = 0xFF00; a <= 0xFFFF; a++) {
+    for (int b = 0xFF00; b <= 0xFFFF; b++) {
+      if (gate_and16(a, b) != ((a & b) & 0xFFFF)) {
+        return 0;
+      }
+    }
+  }
+  return 1;
+}
+
 void run_tests() {
   printf("Testing gate functions...\n");
 
@@ -88,6 +106,7 @@ void run_tests() {
   printf("test_gate_demux: %s\n", test_gate_demux() ? "PASS" : "FAIL");
   printf("test_gate_not16: %s\n", test_gate_not16() ? "PASS" : "FAIL");
   printf("test_gate_or16: %s\n", test_gate_or16() ? "PASS" : "FAIL");
+   printf("test_gate_and16: %s\n", test_gate_and16() ? "PASS" : "FAIL");
 }
 
 int main() {
