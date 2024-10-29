@@ -8,9 +8,11 @@ BUILD_DIR = build
 INCLUDE_DIR = include
 TEST_DIR = tests
 
-# Source and object files
+# Source and object files, excluding main.c for testing
 SRCS := $(wildcard $(SRC_DIR)/*.c)
+TEST_SRCS := $(filter-out $(SRC_DIR)/main.c, $(SRCS))
 OBJS := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+TEST_OBJS := $(TEST_SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
 # Target executable
 TARGET = $(BUILD_DIR)/computer
@@ -18,7 +20,7 @@ TARGET = $(BUILD_DIR)/computer
 # Default rule
 all: $(TARGET)
 
-# Link object files into the final executable
+# Link object files into the final executable, including main.o
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $^
 
@@ -34,10 +36,11 @@ $(BUILD_DIR):
 clean:
 	rm -rf $(BUILD_DIR)
 
-test: $(OBJS)
+# Run all test files in the tests directory, without main.o
+test: $(TEST_OBJS)
 	@mkdir -p $(BUILD_DIR)/tests
 	@for test_file in $(wildcard $(TEST_DIR)/*.c); do \
 		test_exec=$(BUILD_DIR)/tests/$$(basename $$test_file .c); \
-		$(CC) $(CFLAGS) $$test_file $(OBJS) -o $$test_exec && \
+		$(CC) $(CFLAGS) $$test_file $(TEST_OBJS) -o $$test_exec && \
 		echo "Running $$test_exec" && $$test_exec; \
 	done
