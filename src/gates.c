@@ -45,7 +45,6 @@ int gate_not16(int in) {
   return out;
 }
 
-
 int gate_or16(int a, int b) {
   int out = 0;
   for (int i = 0; i < 16; i++) {
@@ -60,6 +59,48 @@ int gate_and16(int a, int b) {
   for (int i = 0; i < 16; i++) {
     int bit = gate_and((get_bit(a, i)), get_bit(b, i));
     out |= (bit << i);
+  }
+  return out;
+}
+
+// I think this could in theory be the same size as a 16bit number and
+//  therefore not any slower, but there might be quirks, revisit this if
+// I go insane bit shifting
+// struct bit16 {
+//     unsigned int a : 1;
+//     unsigned int b : 1;
+//     unsigned int c : 1;
+//     unsigned int d : 1;
+//     unsigned int e : 1;
+//     unsigned int f : 1;
+//     unsigned int g : 1;
+//     unsigned int h : 1;
+//     unsigned int i : 1;
+//     unsigned int j : 1;
+//     unsigned int k : 1;
+//     unsigned int l : 1;
+//     unsigned int m : 1;
+//     unsigned int n : 1;
+//     unsigned int o : 1;
+//     unsigned int p : 1;
+// };
+
+// remember this is actually returning a 16 bit number or gg
+int gate_mux16(int a, int b, int sel) {
+  // //not doing the full implementation to keep my marbles safe
+  // if (sel) {
+  //   return b;
+  // }
+  // return a;
+
+  int out = 0;
+  for (int i = 0; i < 16; i++) {
+    int bit_a = get_bit(a, i);
+    int bit_b = get_bit(b, i);
+
+    int selected_bit = gate_mux(bit_a, bit_b, sel);
+
+    out |= (selected_bit << i);
   }
   return out;
 }

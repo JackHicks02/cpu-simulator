@@ -94,6 +94,20 @@ int test_gate_and16() {
   return 1;
 }
 
+int test_gate_mux16() {
+  int max = 0xFFFF;
+  int min = 0;
+
+  if (gate_mux16(max, min, 1) != min) {
+    return 0;
+  }
+  if (gate_mux16(max, min, 0) != max) {
+    return 0;
+  }
+
+  return 1;
+}
+
 void run_tests() {
   printf("Testing gate functions...\n");
 
@@ -106,7 +120,8 @@ void run_tests() {
   printf("test_gate_demux: %s\n", test_gate_demux() ? "PASS" : "FAIL");
   printf("test_gate_not16: %s\n", test_gate_not16() ? "PASS" : "FAIL");
   printf("test_gate_or16: %s\n", test_gate_or16() ? "PASS" : "FAIL");
-   printf("test_gate_and16: %s\n", test_gate_and16() ? "PASS" : "FAIL");
+  printf("test_gate_and16: %s\n", test_gate_and16() ? "PASS" : "FAIL");
+  printf("test_gate_mux16: %s\n", test_gate_mux16() ? "PASS" : "FAIL");
 }
 
 int main() {
