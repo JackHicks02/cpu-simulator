@@ -34,7 +34,10 @@ $(BUILD_DIR):
 clean:
 	rm -rf $(BUILD_DIR)
 
-# Run tests
-test: all
-	$(CC) $(CFLAGS) $(TEST_DIR)/test_module1.c $(OBJS) -o $(BUILD_DIR)/test_module1
-	$(BUILD_DIR)/test_module1
+test: $(OBJS)
+	@mkdir -p $(BUILD_DIR)/tests
+	@for test_file in $(wildcard $(TEST_DIR)/*.c); do \
+		test_exec=$(BUILD_DIR)/tests/$$(basename $$test_file .c); \
+		$(CC) $(CFLAGS) $$test_file $(OBJS) -o $$test_exec && \
+		echo "Running $$test_exec" && $$test_exec; \
+	done
