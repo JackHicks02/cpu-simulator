@@ -1,15 +1,77 @@
 #include "../include/gates.h"
+#include "../include/print_binary.h"
 #include <stdio.h>
+
+int gate_nand(int a, int b);
+int gate_not(int a);
+int gate_and(int a, int b);
+int gate_or(int a, int b);
+int gate_xor(int a, int b);
+int gate_mux(int a, int b, int sel);
+int gate_demux(int in, int sel);
+int gate_not16(int in);
+int gate_or16(int a, int b);
 
 int test_gate_nand() {
   return gate_nand(1, 1) == 0 && gate_nand(1, 0) == 1 && gate_nand(0, 1) == 1 &&
          gate_nand(0, 0) == 1;
 }
 
+int test_gate_not() { return gate_not(1) == 0 && gate_not(0) == 1; }
+
+int test_gate_and() {
+  return gate_and(1, 1) == 1 && gate_and(1, 0) == 0 && gate_and(0, 1) == 0 &&
+         gate_and(0, 0) == 0;
+}
+
+int test_gate_or() {
+  return gate_or(1, 1) == 1 && gate_or(1, 0) == 1 && gate_or(0, 1) == 1 &&
+         gate_or(0, 0) == 0;
+}
+
+int test_gate_xor() {
+  return gate_xor(1, 1) == 0 && gate_xor(1, 0) == 1 && gate_xor(0, 1) == 1 &&
+         gate_xor(0, 0) == 0;
+}
+
+int test_gate_mux() {
+  return gate_mux(0, 1, 0) == 0 && gate_mux(0, 1, 1) == 1 &&
+         gate_mux(1, 0, 0) == 1 && gate_mux(1, 0, 1) == 0;
+}
+
+int test_gate_demux() {
+  return gate_demux(1, 0) == 1 && gate_demux(1, 1) == 0b10 &&
+         gate_demux(0, 0) == 0 && gate_demux(0, 1) == 0;
+}
+
+int test_gate_not16() {
+  for (int i = 0; i <= 0xFFFF; i++) {
+    //must mask to 16 bits or it won't be equal
+    if (gate_not16(i) != ((~i) & 0xFFFF)) {
+      print_binary(i, 16);
+      print_binary(gate_not16(i), 16);
+      return 0;
+    }
+  }
+  return 1;
+}
+
+int test_gate_or16() {
+  return gate_or16(0b0001, 0x1000) == gate_or16(0b1000, 0x0001);
+}
+
 void run_tests() {
   printf("Testing gate functions...\n");
 
   printf("test_gate_nand: %s\n", test_gate_nand() ? "PASS" : "FAIL");
+  printf("test_gate_not: %s\n", test_gate_not() ? "PASS" : "FAIL");
+  printf("test_gate_and: %s\n", test_gate_and() ? "PASS" : "FAIL");
+  printf("test_gate_or: %s\n", test_gate_or() ? "PASS" : "FAIL");
+  printf("test_gate_xor: %s\n", test_gate_xor() ? "PASS" : "FAIL");
+  printf("test_gate_mux: %s\n", test_gate_mux() ? "PASS" : "FAIL");
+  printf("test_gate_demux: %s\n", test_gate_demux() ? "PASS" : "FAIL");
+  printf("test_gate_not16: %s\n", test_gate_not16() ? "PASS" : "FAIL");
+  printf("test_gate_or16: %s\n", test_gate_or16() ? "PASS" : "FAIL");
 }
 
 int main() {
