@@ -1,5 +1,6 @@
 #include "./gates/gates.h"
 #include "./utils/print_binary.h"
+#include "utils/get_bit.h"
 #include <stdio.h>
 
 // TODO: replace int with this, char is 1 byte...
@@ -45,9 +46,20 @@ void test(void) {
   printf("---------NOT 16-----------\n");
   print_binary(gate_not16(700001), 16);
   printf("--------END DEMUX TEST--------\n");
+
+  printf("---------GET BIT TEST-----------\n");
+  int testNumber = 0b1001001101;
+  print_binary(testNumber, 16);
+
+  for (int i = 0; i < 16; i++) {
+    printf("%d ", get_bit(testNumber, i));
+  }
+  printf("\n--------END DEMUX TEST--------\n");
 }
 
 int main(void) {
   test();
+  printf("\n");
+  getchar();
   return 0;
 }
