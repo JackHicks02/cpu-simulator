@@ -46,7 +46,7 @@ int test_gate_demux() {
 
 int test_gate_not16() {
   for (int i = 0; i <= 0xFFFF; i++) {
-    //must mask to 16 bits or it won't be equal
+    // must mask to 16 bits or it won't be equal
     if (gate_not16(i) != ((~i) & 0xFFFF)) {
       print_binary(i, 16);
       print_binary(gate_not16(i), 16);
@@ -56,8 +56,24 @@ int test_gate_not16() {
   return 1;
 }
 
+// This can't be tested properly because the time complexity using the full
+// or_16 and iterating it through this is n^3
 int test_gate_or16() {
-  return gate_or16(0b0001, 0x1000) == gate_or16(0b1000, 0x0001);
+  for (int a = 0; a <= 0xFF; a++) {
+    for (int b = 0; b <= 0xFF; b++) {
+      if (gate_or16(a, b) != ((a | b) & 0xFFFF)) {
+        return 0;
+      }
+    }
+  }
+  for (int a = 0xFF00; a <= 0xFFFF; a++) {
+    for (int b = 0xFF00; b <= 0xFFFF; b++) {
+      if (gate_or16(a, b) != ((a | b) & 0xFFFF)) {
+        return 0;
+      }
+    }
+  }
+  return 1;
 }
 
 void run_tests() {
