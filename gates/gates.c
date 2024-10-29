@@ -25,7 +25,7 @@ int gate_mux(int a, int b, int sel) {
   return (gate_or(gate_and(a, gate_not(sel)), gate_and(b, sel)));
 }
 
-int demux(int in, int sel) {
+int gate_demux(int in, int sel) {
   // DemuxResult result = {
   //     out1: and(in, not(sel)),
   //     out2: and(in, sel)
@@ -36,7 +36,7 @@ int demux(int in, int sel) {
   return (out1 + (out2 << 1));
 }
 
-int not16(int in) {
+int gate_not16(int in) {
   int out = 0;
   for (int i = 0; i < 16; i++) {
     int bit = gate_not(get_bit(in, i));
