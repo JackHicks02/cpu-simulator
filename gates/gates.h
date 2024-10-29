@@ -6,7 +6,7 @@ int nand(int a, int b);
 
 int not(int a);
 
-int and (int a, int b);
+int and(int a, int b);
 
 int or(int a, int b);
 
