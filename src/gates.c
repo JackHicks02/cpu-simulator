@@ -66,6 +66,7 @@ int gate_and16(int a, int b) {
 // I think this could in theory be the same size as a 16bit number and
 //  therefore not any slower, but there might be quirks, revisit this if
 // I go insane bit shifting
+// Shout out C Dudd
 // struct bit16 {
 //     unsigned int a : 1;
 //     unsigned int b : 1;
