@@ -1,4 +1,4 @@
-#include "./get_bit.h"
+#include "../include/get_bit.h"
 #include <stdio.h>
 
 void print_binary(int number, int bit) {

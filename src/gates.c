@@ -1,4 +1,4 @@
-#include "../utils/get_bit.h"
+#include "../include/get_bit.h"
 
 int gate_nand(int a, int b) {
   return ~(a & b) & 1;

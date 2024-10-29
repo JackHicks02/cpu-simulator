@@ -1,6 +1,6 @@
-#include "./gates/gates.h"
-#include "./utils/print_binary.h"
-#include "utils/get_bit.h"
+#include "../include/gates.h"
+#include "../include/print_binary.h"
+#include "../include/get_bit.h"
 #include <stdio.h>
 
 // TODO: replace int with this, char is 1 byte...
