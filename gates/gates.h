@@ -2,20 +2,20 @@
 #define GATES_H
 
 // some of the gates are c++ keywords and it makes it look disgusting :(
-int nand(int a, int b);
+int gate_nand(int a, int b);
 
-int not(int a);
+int gate_not(int a);
 
-int and(int a, int b);
+int gate_and(int a, int b);
 
-int or(int a, int b);
+int gate_or(int a, int b);
 
-int demux(int in, int sel);
+int gate_demux(int in, int sel);
 
-int mux(int a, int b, int s);
+int gate_mux(int a, int b, int s);
 
-int xor(int in, int sel);
+int gate_xor(int in, int sel);
 
-int not16(int in);
+int gate_not16(int in);
 
 #endif
