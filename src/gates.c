@@ -105,3 +105,21 @@ int gate_mux16(int a, int b, int sel) {
   }
   return out;
 }
+
+int gate_or8way(int a) {
+  // return a != 0
+
+  int a0 = get_bit(a, 0);
+  int a1 = get_bit(a, 1);
+  int a2 = get_bit(a, 2);
+  int a3 = get_bit(a, 3);
+  int a4 = get_bit(a, 4);
+  int a5 = get_bit(a, 5);
+  int a6 = get_bit(a, 6);
+  int a7 = get_bit(a, 7);
+
+  return gate_or(
+      a7,gate_or(
+      a6, gate_or(a5, gate_or(a4, gate_or(a3, gate_or(a2, gate_or(a1, a0))))))
+      );
+}
