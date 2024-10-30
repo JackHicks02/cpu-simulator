@@ -24,4 +24,6 @@ int gate_and16(int a, int b);
 
 int gate_mux16(int a, int b, int sel);
 
+int gate_or8way(int a);
+
 #endif
