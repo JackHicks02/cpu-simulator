@@ -48,6 +48,8 @@ $(BUILD_DIR):
 # Clean up build artifacts
 clean:
 	rm -rf $(BUILD_DIR)
+sudo apt update
+sudo apt install mingw-w64
 
 # Run all test files in the tests directory, without main.o for Linux
 test: $(TEST_OBJS)
