@@ -139,3 +139,20 @@ int gate_mux4way16(int a, int b, int c, int d, int s) {
 
   return gate_mux16(ab, cd, s1);
 }
+
+// this is probably bit, really should use custom types to make this not
+// misleading 2bit s, 1bit in pls
+int gate_demux4way(int in, int sel) {
+  int s0 = get_bit(sel, 0);
+  int s1 = get_bit(sel, 1);
+
+  int ac = gate_demux(in, s0);
+  int bd = gate_demux(in, s1);
+
+  int a = get_bit(ac, 0);
+  int c = get_bit(ac, 1);
+  int b = get_bit(bd, 0);
+  int d = get_bit(bd, 1);
+
+  return a + (b << 1) + (c << 2) + (d << 3);
+}
