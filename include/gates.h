@@ -26,4 +26,8 @@ int gate_mux16(int a, int b, int sel);
 
 int gate_or8way(int a);
 
+int gate_mux4way16(int a, int b, int c, int d, int s);
+
+int gate_demux4way(int in, int sel);
+
 #endif
