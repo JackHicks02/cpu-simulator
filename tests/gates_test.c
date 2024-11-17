@@ -213,6 +213,33 @@ int test_gate_mux8way16() {
   return 1;
 }
 
+int test_gate_demux4way() {
+  int result;
+
+  result = gate_demux4way(1, 0b00);
+  if (result != 0b0001) {
+    printf("a\n");
+    return 0;
+  }
+
+  result = gate_demux4way(1, 0b01);
+  if (result != 0b0010) {
+    return 0;
+  }
+
+  result = gate_demux4way(1, 0b10);
+  if (result != 0b0100) {
+    return 0;
+  }
+
+  result = gate_demux4way(1, 0b11);
+  if (result != 0b1000) {
+    return 0;
+  }
+
+  return 1;
+}
+
 void run_tests() {
   printf("Testing gate functions...\n");
 
@@ -229,6 +256,7 @@ void run_tests() {
   printf("test_gate_mux16: %s\n", test_gate_mux16() ? "PASS" : "FAIL");
   printf("test_gate_mux4way16: %s\n", test_gate_mux4way16() ? "PASS" : "FAIL");
   printf("test_gate_mux8way16: %s\n", test_gate_mux8way16() ? "PASS" : "FAIL");
+  printf("test_gate_demux4way: %s\n", test_gate_demux4way() ? "PASS" : "FAIL");
 }
 
 int main() {

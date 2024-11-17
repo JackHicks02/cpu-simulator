@@ -160,13 +160,19 @@ int gate_demux4way(int in, int sel) {
   int s0 = get_bit(sel, 0);
   int s1 = get_bit(sel, 1);
 
-  int ac = gate_demux(in, s0);
-  int bd = gate_demux(in, s1);
+  int abcd = gate_demux(in, s1);
 
-  int a = get_bit(ac, 0);
-  int c = get_bit(ac, 1);
-  int b = get_bit(bd, 0);
-  int d = get_bit(bd, 1);
+  int a_or_b = (abcd) & 1;
+  int c_or_d = (abcd >> 1) & 1;
 
-  return a + (b << 1) + (c << 2) + (d << 3);
+  int ab = gate_demux(a_or_b, s0);
+  int cd = gate_demux(c_or_d, s0);
+
+  int a = ab & 1;
+  int b = (ab >> 1) & 1;
+  int c = cd & 1;
+  int d = (cd >> 1) & 1;
+
+  int result = a | (b << 1) | (c << 2) | (d << 3);
+  return result;
 }
