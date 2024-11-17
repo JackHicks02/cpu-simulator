@@ -148,6 +148,71 @@ int test_gate_mux4way16() {
   return 1;
 }
 
+int test_gate_mux8way16() {
+  int a, b, c, d, e, f, g, h;
+  int result = 0;
+
+  a = 0b1010101010101010;
+  b = 0b0101010101010101;
+  c = 0b1111000011110000;
+  d = 0b0000111100001111;
+  e = 0b0011001100110011;
+  f = 0b1100110011001100;
+  g = 0b1111111100000000;
+  h = 0b0000000011111111;
+
+  // Test all selector values
+  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b000);
+  if (result != a) {
+    return 0;
+  }
+
+  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b001);
+  if (result != b) {
+    return 0;
+  }
+
+  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b010);
+  if (result != c) {
+    return 0;
+  }
+
+  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b011);
+  if (result != d) {
+    return 0;
+  }
+
+  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b100);
+  if (result != e) {
+    return 0;
+  }
+
+  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b101);
+  if (result != f) {
+    return 0;
+  }
+
+  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b110);
+  if (result != g) {
+    return 0;
+  }
+
+  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b111);
+  if (result != h) {
+    return 0;
+  }
+
+  // Test with all inputs set to 0
+  a = b = c = d = e = f = g = h = 0;
+  for (int i = 0; i < 8; i++) {
+    if (gate_mux8way16(a, b, c, d, e, f, g, h, i) != 0) {
+      return 0;
+    }
+  }
+
+  return 1;
+}
+
 void run_tests() {
   printf("Testing gate functions...\n");
 
@@ -161,7 +226,9 @@ void run_tests() {
   printf("test_gate_not16: %s\n", test_gate_not16() ? "PASS" : "FAIL");
   printf("test_gate_or16: %s\n", test_gate_or16() ? "PASS" : "FAIL");
   printf("test_gate_and16: %s\n", test_gate_and16() ? "PASS" : "FAIL");
+  printf("test_gate_mux16: %s\n", test_gate_mux16() ? "PASS" : "FAIL");
   printf("test_gate_mux4way16: %s\n", test_gate_mux4way16() ? "PASS" : "FAIL");
+  printf("test_gate_mux8way16: %s\n", test_gate_mux8way16() ? "PASS" : "FAIL");
 }
 
 int main() {

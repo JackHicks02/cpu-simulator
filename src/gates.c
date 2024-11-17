@@ -101,6 +101,8 @@ int gate_mux16(int a, int b, int sel) {
 
     int selected_bit = gate_mux(bit_a, bit_b, sel);
 
+    // bits never overlap so addition can be used if it turns out that's faster,
+    // which it probably isn't ever
     out |= (selected_bit << i);
   }
   return out;
@@ -137,6 +139,19 @@ int gate_mux4way16(int a, int b, int c, int d, int s) {
   int cd = gate_mux16(c, d, s0);
 
   return gate_mux16(ab, cd, s1);
+}
+
+// 3bit s, s <= 7
+int gate_mux8way16(int a, int b, int c, int d, int e, int f, int g, int h,
+                   int s) {
+  int s0 = get_bit(s, 0);
+  int s1 = get_bit(s, 1);
+  int s2 = get_bit(s, 2);
+
+  int abcd = gate_mux4way16(a, b, c, d, s0 | (s1 << 1));
+  int efgh = gate_mux4way16(e, f, g, h, s0 | (s1 << 1));
+
+  return gate_mux16(abcd, efgh, s2);
 }
 
 // this is probably bit, really should use custom types to make this not
