@@ -179,16 +179,16 @@ int gate_demux4way(int in, int sel) {
 
 // 1bit in or gg
 int gate_demux8way(int in, int sel) {
-  int s0 = get_bit(sel, 0);
+  int s3 = (sel >> 2) & 1;
 
   // this is so pointless lmao
-  int abcdefgh = gate_demux4way(in, s0);
+  int abcdefgh = gate_demux4way(in, s3);
 
   int abcd = abcdefgh & 1;
   int efgh = (abcdefgh >> 1) & 1;
 
-  int a_b_c_d = gate_demux4way(abcd, (sel >> 1) & 0b11);
-  int e_f_g_h = gate_demux4way(efgh, (sel >> 1) & 0b11);
+  int a_b_c_d = gate_demux4way(abcd, (sel) & 0b11);
+  int e_f_g_h = gate_demux4way(efgh, (sel) & 0b11);
 
   int result = a_b_c_d | (e_f_g_h << 4);
   return result;
