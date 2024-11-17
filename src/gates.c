@@ -1,4 +1,5 @@
 #include "../include/get_bit.h"
+#include <stdio.h>
 
 int gate_nand(int a, int b) {
   return ~(a & b) & 1;
@@ -133,9 +134,8 @@ int gate_mux4way16(int a, int b, int c, int d, int s) {
   int s1 = get_bit(s, 1);
 
   // if s00 a, s01 b, s10 c, s11 d
-
   int ab = gate_mux16(a, b, s0);
-  int cd = gate_mux16(a, b, s0);
+  int cd = gate_mux16(c, d, s0);
 
   return gate_mux16(ab, cd, s1);
 }
