@@ -108,6 +108,46 @@ int test_gate_mux16() {
   return 1;
 }
 
+int test_gate_mux4way16() {
+  int a, b = 0, c = 0, d = 0;
+  a = 0b1010101;
+  int result = 0;
+
+  result = gate_mux4way16(a, b, c, d, 0);
+  if (result != a) {
+    return 0;
+  }
+  a = 0;
+  b = 0b1101101;
+
+  result = gate_mux4way16(a, b, c, d, 1);
+  if (result != b) {
+    return 0;
+  }
+  b = 0;
+  c = 0b0100101;
+
+  result = gate_mux4way16(a, b, c, d, 0b10);
+  if (result != c) {
+    return 0;
+  }
+  c = 0;
+  d = 0b10111011;
+
+  result = gate_mux4way16(a, b, c, d, 0b11);
+  if (result != d) {
+    return 0;
+  }
+  d = 0;
+
+  for (int i = 0; i < 4; i++)
+    if (gate_mux4way16(a, b, c, d, i) != 0) {
+      return 0;
+    }
+
+  return 1;
+}
+
 void run_tests() {
   printf("Testing gate functions...\n");
 
@@ -121,7 +161,7 @@ void run_tests() {
   printf("test_gate_not16: %s\n", test_gate_not16() ? "PASS" : "FAIL");
   printf("test_gate_or16: %s\n", test_gate_or16() ? "PASS" : "FAIL");
   printf("test_gate_and16: %s\n", test_gate_and16() ? "PASS" : "FAIL");
-  printf("test_gate_mux16: %s\n", test_gate_mux16() ? "PASS" : "FAIL");
+  printf("test_gate_mux4way16: %s\n", test_gate_mux4way16() ? "PASS" : "FAIL");
 }
 
 int main() {
