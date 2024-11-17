@@ -177,15 +177,19 @@ int gate_demux4way(int in, int sel) {
   return result;
 }
 
+// 1bit in or gg
 int gate_demux8way(int in, int sel) {
   int s0 = get_bit(sel, 0);
-  int s1 = get_bit(sel, 1);
-  int s2 = get_bit(sel, 2);
 
-  // it's a true simulation but it's a bit excessive computing all this
-  int abcd = gate_demux4way(in, sel >> 2 & 2);
-  int efgh = gate_demux4way(in, sel >> 2 & 2);
+  // this is so pointless lmao
+  int abcdefgh = gate_demux4way(in, s0);
 
-  int abcdefg = abcd | (efgh << 4);
-  return abcdefg;
+  int abcd = abcdefgh & 1;
+  int efgh = (abcdefgh >> 1) & 1;
+
+  int a_b_c_d = gate_demux4way(abcd, (sel >> 1) & 0b11);
+  int e_f_g_h = gate_demux4way(efgh, (sel >> 1) & 0b11);
+
+  int result = a_b_c_d | (e_f_g_h << 4);
+  return result;
 }
