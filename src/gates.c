@@ -176,3 +176,16 @@ int gate_demux4way(int in, int sel) {
   int result = a | (b << 1) | (c << 2) | (d << 3);
   return result;
 }
+
+int gate_demux8way(int in, int sel) {
+  int s0 = get_bit(sel, 0);
+  int s1 = get_bit(sel, 1);
+  int s2 = get_bit(sel, 2);
+
+  // it's a true simulation but it's a bit excessive computing all this
+  int abcd = gate_demux4way(in, sel >> 2 & 2);
+  int efgh = gate_demux4way(in, sel >> 2 & 2);
+
+  int abcdefg = abcd | (efgh << 4);
+  return abcdefg;
+}
