@@ -240,6 +240,60 @@ int test_gate_demux4way() {
   return 1;
 }
 
+int test_gate_demux8way() {
+  int result;
+
+  result = gate_demux8way(1, 0b000);
+  if (result != 0b00000001) {
+    printf("Test failed: sel=0b000, expected 0b00000001, got 0b%08b\n", result);
+    return 0;
+  }
+
+  result = gate_demux8way(1, 0b001);
+  if (result != 0b00000010) {
+    printf("Test failed: sel=0b001, expected 0b00000010, got 0b%08b\n", result);
+    return 0;
+  }
+
+  result = gate_demux8way(1, 0b010);
+  if (result != 0b00000100) {
+    printf("Test failed: sel=0b010, expected 0b00000100, got 0b%08b\n", result);
+    return 0;
+  }
+
+  result = gate_demux8way(1, 0b011);
+  if (result != 0b00001000) {
+    printf("Test failed: sel=0b011, expected 0b00001000, got 0b%08b\n", result);
+    return 0;
+  }
+
+  result = gate_demux8way(1, 0b100);
+  if (result != 0b00010000) {
+    printf("Test failed: sel=0b100, expected 0b00010000, got 0b%08b\n", result);
+    return 0;
+  }
+
+  result = gate_demux8way(1, 0b101);
+  if (result != 0b00100000) {
+    printf("Test failed: sel=0b101, expected 0b00100000, got 0b%08b\n", result);
+    return 0;
+  }
+
+  result = gate_demux8way(1, 0b110);
+  if (result != 0b01000000) {
+    printf("Test failed: sel=0b110, expected 0b01000000, got 0b%08b\n", result);
+    return 0;
+  }
+
+  result = gate_demux8way(1, 0b111);
+  if (result != 0b10000000) {
+    printf("Test failed: sel=0b111, expected 0b10000000, got 0b%08b\n", result);
+    return 0;
+  }
+
+  return 1;
+}
+
 void run_tests() {
   printf("Testing gate functions...\n");
 
@@ -257,6 +311,7 @@ void run_tests() {
   printf("test_gate_mux4way16: %s\n", test_gate_mux4way16() ? "PASS" : "FAIL");
   printf("test_gate_mux8way16: %s\n", test_gate_mux8way16() ? "PASS" : "FAIL");
   printf("test_gate_demux4way: %s\n", test_gate_demux4way() ? "PASS" : "FAIL");
+    printf("test_gate_demux8way: %s\n", test_gate_demux8way() ? "PASS" : "FAIL");
 }
 
 int main() {
