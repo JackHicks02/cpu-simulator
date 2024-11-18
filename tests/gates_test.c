@@ -2,16 +2,6 @@
 #include "../include/print_binary.h"
 #include <stdio.h>
 
-int gate_nand(int a, int b);
-int gate_not(int a);
-int gate_and(int a, int b);
-int gate_or(int a, int b);
-int gate_xor(int a, int b);
-int gate_mux(int a, int b, int sel);
-int gate_demux(int in, int sel);
-int gate_not16(int in);
-int gate_or16(int a, int b);
-
 int test_gate_nand() {
   return gate_nand(1, 1) == 0 && gate_nand(1, 0) == 1 && gate_nand(0, 1) == 1 &&
          gate_nand(0, 0) == 1;
@@ -311,7 +301,7 @@ void run_tests() {
   printf("test_gate_mux4way16: %s\n", test_gate_mux4way16() ? "PASS" : "FAIL");
   printf("test_gate_mux8way16: %s\n", test_gate_mux8way16() ? "PASS" : "FAIL");
   printf("test_gate_demux4way: %s\n", test_gate_demux4way() ? "PASS" : "FAIL");
-    printf("test_gate_demux8way: %s\n", test_gate_demux8way() ? "PASS" : "FAIL");
+  printf("test_gate_demux8way: %s\n", test_gate_demux8way() ? "PASS" : "FAIL");
 }
 
 int main() {
