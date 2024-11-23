@@ -1,10 +1,13 @@
 #ifndef GATES_H
 #define GATES_H
 
-#include <cstdint>
+//#include <cstdint>
 
-typedef uint8_t u8;
-typedef uint16_t u16;
+//typedef uint8_t u8;
+//typedef uint16_t u16;
+
+typedef char u8;
+typedef short u16;
 
 int gate_nand(u8 a, int b);
 
