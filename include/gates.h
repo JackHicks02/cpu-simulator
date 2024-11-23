@@ -2,7 +2,6 @@
 #ifndef GATES_H
 #define GATES_H
 
-
 typedef uint8_t u8;
 typedef uint16_t u16;
 
@@ -28,14 +27,12 @@ void gate_or8way(u16 *in, u8 *out);
 
 // 4-way and 8-way multiplexers for 16-bit inputs
 void gate_mux4way16(u16 *a, u16 *b, u16 *c, u16 *d, u8 *sel, u16 *out);
-void gate_mux8way16(u16 *a, u16 *b, u16 *c, u16 *d,
-                    u16 *e, u16 *f, u16 *g, u16 *h,
-                    u8 *sel, u16 *out);
+void gate_mux8way16(u16 *a, u16 *b, u16 *c, u16 *d, u16 *e, u16 *f, u16 *g,
+                    u16 *h, u8 *sel, u16 *out);
 
 // 4-way and 8-way demultiplexers for single-bit inputs
 void gate_demux4way(u8 *in, u8 *sel, u8 *out0, u8 *out1, u8 *out2, u8 *out3);
-void gate_demux8way(u8 *in, u8 *sel,
-                    u8 *out0, u8 *out1, u8 *out2, u8 *out3,
+void gate_demux8way(u8 *in, u8 *sel, u8 *out0, u8 *out1, u8 *out2, u8 *out3,
                     u8 *out4, u8 *out5, u8 *out6, u8 *out7);
 
 #endif
