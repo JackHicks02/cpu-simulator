@@ -82,6 +82,7 @@ void gate_demux(u8 *in, u8 *sel, u8 *out0, u8 *out1) {
   // return (out1 + (out2 << 1));
 }
 
+// could be multiple outputs
 void gate_not16(u16 *in, u16 *out) {
   // int out = 0;
   u16 inVal = *in;
@@ -95,22 +96,34 @@ void gate_not16(u16 *in, u16 *out) {
   }
 }
 
-int gate_or16(int a, int b) {
-  int out = 0;
+void gate_or16(u16 *a, u16 *b, u16 *out) {
+  u16 aVal = *a;
+  u16 bVal = *b;
+
   for (int i = 0; i < 16; i++) {
-    int bit = gate_or((get_bit(a, i)), get_bit(b, i));
-    out |= (bit << i);
+    u8 aBit = get_bit(aVal, i);
+    u8 bBit = get_bit(bVal, i);
+
+    u8 AvB;
+    gate_or(&aBit, &bBit, &AvB);
+
+    *out |= (AvB << i);
   }
-  return out;
 }
 
-int gate_and16(int a, int b) {
-  int out = 0;
+void gate_and16(u16 *a, u16 *b, u16 *out) {
+  u16 aVal = *a;
+  u16 bVal = *b;
+
   for (int i = 0; i < 16; i++) {
-    int bit = gate_and((get_bit(a, i)), get_bit(b, i));
-    out |= (bit << i);
+    u8 aBit = get_bit(aVal, i);
+    u8 bBit = get_bit(bVal, i);
+
+    u8 AxB;
+    gate_and(&aBit, &bBit, &AxB);
+
+    *out |= (AxB << i);
   }
-  return out;
 }
 
 // I think this could in theory be the same size as a 16bit number and
@@ -137,25 +150,27 @@ int gate_and16(int a, int b) {
 // };
 
 // remember this is actually returning a 16 bit number or gg
-int gate_mux16(int a, int b, int sel) {
+void gate_mux16(u16 *a, u16 *b, u8 *sel, u16 *out) {
   // //not doing the full implementation to keep my marbles safe
   // if (sel) {
   //   return b;
   // }
   // return a;
 
-  int out = 0;
-  for (int i = 0; i < 16; i++) {
-    int bit_a = get_bit(a, i);
-    int bit_b = get_bit(b, i);
+  u16 aVal = *a;
+  u16 bVal = *b;
 
-    int selected_bit = gate_mux(bit_a, bit_b, sel);
+  for (int i = 0; i < 16; i++) {
+    u8 bit_a = get_bit(aVal, i);
+    u8 bit_b = get_bit(bVal, i);
+
+    u8 selected_bit;
+    gate_mux(&bit_a, &bit_b, sel, &selected_bit);
 
     // bits never overlap so addition can be used if it turns out that's faster,
     // which it probably isn't ever
-    out |= (selected_bit << i);
+    *out |= (selected_bit << i);
   }
-  return out;
 }
 
 /**
