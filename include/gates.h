@@ -25,6 +25,8 @@ void gate_mux16(u16 *a, u16 *b, u8 *sel, u16 *out);
 // 8-way OR gate for 8-bit input
 void gate_or8way(u8 *in, u8 *out);
 
+
+// A W-way N bit multiplexer requires K selection bits | k = log W
 // 4-way and 8-way multiplexers for 16-bit inputs
 void gate_mux4way16(u16 *a, u16 *b, u16 *c, u16 *d, u8 *sel, u16 *out);
 void gate_mux8way16(u16 *a, u16 *b, u16 *c, u16 *d, u16 *e, u16 *f, u16 *g,

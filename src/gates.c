@@ -211,20 +211,27 @@ void gate_or8way(u8 *a, u8 *out) {
   gate_or(&a7, &A0vA1vA2vA3vA4vA5vA6, out);
 }
 
-int gate_mux4way16(int a, int b, int c, int d, int s) {
-  int s0 = get_bit(s, 0);
-  int s1 = get_bit(s, 1);
+void gate_mux4way16(u16 *a, u16 *b, u16 *c, u16 *d, u8 *s, u16 *out) {
+  u8 sVal = *s;
+
+  u8 s0 = get_bit(sVal, 0), *pS0 = &s0;
+  u8 s1 = get_bit(sVal, 1), *pS1 = &s1;
 
   // if s00 a, s01 b, s10 c, s11 d
-  int ab = gate_mux16(a, b, s0);
-  int cd = gate_mux16(c, d, s0);
+  u16 ab, *pAb = &ab;
+  gate_mux16(a, b, pS0, pAb);
 
-  return gate_mux16(ab, cd, s1);
+  u16 cd, *pCd = &cd;
+  gate_mux16(c, d, pS0, pCd);
+
+  gate_mux16(pAb, pCd, pS1, out);
 }
 
 // 3bit s, s <= 7
-int gate_mux8way16(int a, int b, int c, int d, int e, int f, int g, int h,
-                   int s) {
+void gate_mux8way16(u16 *a, u16 *b, u16 *c, u16 *d, u16 *e, u16 *f, u16 *g,
+                    u16 *h, u8 *s, u16 *out) {
+
+  
   int s0 = get_bit(s, 0);
   int s1 = get_bit(s, 1);
   int s2 = get_bit(s, 2);
