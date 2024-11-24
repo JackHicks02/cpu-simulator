@@ -1,48 +1,98 @@
+#include "../include/gates.h"
 #include "../include/get_bit.h"
 
-int gate_nand(int a, int b) {
-  return ~(a & b) & 1;
+void gate_nand(u8 *a, u8 *b, u8 *out) {
+  *out = ~(*a & *b) & 1;
   // mask with &1 to get least significant bit
   // should probably just mask at outputs
 }
 
-int gate_not(int a) { return gate_nand(a, a); }
+void gate_not(u8 *a, u8 *out) { gate_nand(a, a, out); }
 
-int gate_and(int a, int b) { return gate_not(gate_nand(a, b)); }
+void gate_and(u8 *a, u8 *b, u8 *out) {
+  // having functionaly pure internals for this sort of thing would be
+  // preferable when fast gates are used instead this will solve it, but for
+  // NAND only it would be useful
+  u8 nandResult;
+  gate_nand(a, b, &nandResult);
 
-int gate_or(int a, int b) {
+  gate_not(&nandResult, out);
+}
+
+void gate_or(u8 *a, u8 *b, u8 *out) {
   // not(not(a) and not(b))
-  return gate_nand(gate_not(a), gate_not(b));
+  u8 notA;
+  u8 notB;
+  gate_not(a, &notA);
+  gate_not(b, &notB);
+
+  gate_nand(&notA, &notB, out);
 }
 
-int gate_xor(int a, int b) {
+void gate_xor(u8 *a, u8 *b, u8 *out) {
   // a or b and not (a and b)
-  return (
-      gate_nand(gate_nand(a, gate_nand(a, b)), gate_nand(b, gate_nand(a, b))));
+
+  // even for slow gates this could potentially be packed
+  // but would require gates for each gate to pull off?
+  u8 AxB;
+  gate_and(a, b, &AxB);
+
+  u8 notAxB;
+  gate_not(&AxB, &notAxB);
+
+  u8 AvB;
+  gate_or(a, b, &AvB);
+
+  gate_and(&AvB, &notAxB, out);
+
+  // return (gate_nand(gate_nand(a, gate_nand(a, b)),
+  //                   gate_nand(b, gate_nand(a, b))));
 }
 
-int gate_mux(int a, int b, int sel) {
-  return (gate_or(gate_and(a, gate_not(sel)), gate_and(b, sel)));
+void gate_mux(u8 *a, u8 *b, u8 *sel, u8 *out) {
+  u8 notSel;
+  gate_not(sel, &notSel);
+
+  u8 AxNotSel;
+  gate_and(a, &notSel, &AxNotSel);
+
+  u8 BxSel;
+  gate_and(a, b, &BxSel);
+
+  gate_or(&AxNotSel, &BxSel, out);
 }
 
-int gate_demux(int in, int sel) {
+void gate_demux(u8 *in, u8 *sel, u8 *out0, u8 *out1) {
   // DemuxResult result = {
   //     out1: and(in, not(sel)),
   //     out2: and(in, sel)
   // };
 
-  int out1 = gate_and(in, gate_not(sel));
-  int out2 = gate_and(in, sel);
-  return (out1 + (out2 << 1));
+  // out 1
+  u8 notSel;
+  gate_not(sel, &notSel);
+
+  gate_and(in, &notSel, out0);
+
+  // out 2
+  gate_and(in, sel, out1);
+
+  // int out1 = gate_and(in, gate_not(sel));
+  // int out2 = gate_and(in, sel);
+  // return (out1 + (out2 << 1));
 }
 
-int gate_not16(int in) {
-  int out = 0;
+void gate_not16(u16 *in, u16 *out) {
+  // int out = 0;
+  u16 inVal = *in;
+
   for (int i = 0; i < 16; i++) {
-    int bit = gate_not(get_bit(in, i));
-    out |= (bit << i);
+    u8 bit = get_bit(inVal, i);
+    u8 notBit;
+    gate_not(&bit, &notBit);
+
+    *out |= (notBit << i);
   }
-  return out;
 }
 
 int gate_or16(int a, int b) {
@@ -162,7 +212,7 @@ int gate_demux4way(int in, int sel) {
 
   int abcd = gate_demux(in, s1);
 
-  int a_or_b = (abcd) & 1;
+  int a_or_b = (abcd)&1;
   int c_or_d = (abcd >> 1) & 1;
 
   int ab = gate_demux(a_or_b, s0);
@@ -187,8 +237,8 @@ int gate_demux8way(int in, int sel) {
   int abcd = abcdefgh & 1;
   int efgh = (abcdefgh >> 1) & 1;
 
-  int a_b_c_d = gate_demux4way(abcd, (sel) & 0b11);
-  int e_f_g_h = gate_demux4way(efgh, (sel) & 0b11);
+  int a_b_c_d = gate_demux4way(abcd, (sel)&0b11);
+  int e_f_g_h = gate_demux4way(efgh, (sel)&0b11);
 
   int result = a_b_c_d | (e_f_g_h << 4);
   return result;
