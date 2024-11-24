@@ -176,23 +176,39 @@ void gate_mux16(u16 *a, u16 *b, u8 *sel, u16 *out) {
 /**
   8bit
  */
-int gate_or8way(int a) {
+void gate_or8way(u8 *a, u8 *out) {
   // return a != 0
 
-  int a0 = get_bit(a, 0);
-  int a1 = get_bit(a, 1);
-  int a2 = get_bit(a, 2);
-  int a3 = get_bit(a, 3);
-  int a4 = get_bit(a, 4);
-  int a5 = get_bit(a, 5);
-  int a6 = get_bit(a, 6);
-  int a7 = get_bit(a, 7);
+  u8 aVal = *a;
 
-  return gate_or(
-      a7,
-      gate_or(
-          a6,
-          gate_or(a5, gate_or(a4, gate_or(a3, gate_or(a2, gate_or(a1, a0)))))));
+  u8 a0 = get_bit(aVal, 0);
+  u8 a1 = get_bit(aVal, 1);
+  u8 a2 = get_bit(aVal, 2);
+  u8 a3 = get_bit(aVal, 3);
+  u8 a4 = get_bit(aVal, 4);
+  u8 a5 = get_bit(aVal, 5);
+  u8 a6 = get_bit(aVal, 6);
+  u8 a7 = get_bit(aVal, 7);
+
+  u8 A0vA1;
+  gate_or(&a0, &a1, &A0vA1);
+
+  u8 A0vA1vA2;
+  gate_or(&a2, &A0vA1, &A0vA1vA2);
+
+  u8 A0vA1vA2vA3;
+  gate_or(&a3, &A0vA1vA2, &A0vA1vA2vA3);
+
+  u8 A0vA1vA2vA3vA4;
+  gate_or(&a4, &A0vA1vA2vA3, &A0vA1vA2vA3vA4);
+
+  u8 A0vA1vA2vA3vA4vA5;
+  gate_or(&a5, &A0vA1vA2vA3vA4, &A0vA1vA2vA3vA4vA5);
+
+  u8 A0vA1vA2vA3vA4vA5vA6;
+  gate_or(&a6, &A0vA1vA2vA3vA4vA5, &A0vA1vA2vA3vA4vA5vA6);
+
+  gate_or(&a7, &A0vA1vA2vA3vA4vA5vA6, out);
 }
 
 int gate_mux4way16(int a, int b, int c, int d, int s) {

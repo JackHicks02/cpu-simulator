@@ -22,8 +22,8 @@ void gate_or16(u16 *a, u16 *b, u16 *out);
 void gate_and16(u16 *a, u16 *b, u16 *out);
 void gate_mux16(u16 *a, u16 *b, u8 *sel, u16 *out);
 
-// 8-way OR gate for 16-bit input
-void gate_or8way(u16 *in, u8 *out);
+// 8-way OR gate for 8-bit input
+void gate_or8way(u8 *in, u8 *out);
 
 // 4-way and 8-way multiplexers for 16-bit inputs
 void gate_mux4way16(u16 *a, u16 *b, u16 *c, u16 *d, u8 *sel, u16 *out);
