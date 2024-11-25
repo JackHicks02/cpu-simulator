@@ -231,19 +231,22 @@ void gate_mux4way16(u16 *a, u16 *b, u16 *c, u16 *d, u8 *s, u16 *out) {
 void gate_mux8way16(u16 *a, u16 *b, u16 *c, u16 *d, u16 *e, u16 *f, u16 *g,
                     u16 *h, u8 *s, u16 *out) {
 
-  
-  int s0 = get_bit(s, 0);
-  int s1 = get_bit(s, 1);
-  int s2 = get_bit(s, 2);
+  u8 sVal = *s;
+  u8 s0 = get_bit(sVal, 0);
+  u8 s1 = get_bit(sVal, 1);
+  u8 s2 = get_bit(sVal, 2);
 
-  int abcd = gate_mux4way16(a, b, c, d, s0 | (s1 << 1));
-  int efgh = gate_mux4way16(e, f, g, h, s0 | (s1 << 1));
+  u8 s0vs1 = s0 | (s1 << 1);
 
-  return gate_mux16(abcd, efgh, s2);
+  u16 abcd;
+  gate_mux4way16(a, b, c, d, &s0vs1, &abcd);
+
+  u16 efgh;
+  gate_mux4way16(e, f, g, h, &s0vs1, &efgh);
+
+  gate_mux16(&abcd, &efgh, &s2, out);
 }
 
-// this is probably bit, really should use custom types to make this not
-// misleading 2bit s, 1bit in pls
 int gate_demux4way(int in, int sel) {
   int s0 = get_bit(sel, 0);
   int s1 = get_bit(sel, 1);
@@ -266,7 +269,7 @@ int gate_demux4way(int in, int sel) {
 }
 
 // 1bit in or gg
-int gate_demux8way(int in, int sel) {
+void gate_demux8way(int in, int sel) {
   int s3 = (sel >> 2) & 1;
 
   // this is so pointless lmao
