@@ -247,25 +247,28 @@ void gate_mux8way16(u16 *a, u16 *b, u16 *c, u16 *d, u16 *e, u16 *f, u16 *g,
   gate_mux16(&abcd, &efgh, &s2, out);
 }
 
-int gate_demux4way(int in, int sel) {
-  int s0 = get_bit(sel, 0);
-  int s1 = get_bit(sel, 1);
+void gate_demux4way(u8 *in, u8 *sel, u8 *out0, u8 *out1, u8 *out2, u8 *out3) {
+  u8 selVal = *sel;
+  u8 s0 = get_bit(selVal, 0);
+  u8 s1 = get_bit(selVal, 1);
 
-  int abcd = gate_demux(in, s1);
+  u8 ab;
+  u8 cd;
 
-  int a_or_b = (abcd)&1;
-  int c_or_d = (abcd >> 1) & 1;
+  gate_demux(in, &s1, &ab, &cd);
 
-  int ab = gate_demux(a_or_b, s0);
-  int cd = gate_demux(c_or_d, s0);
+  gate_demux(&ab, &s0, out0, out1);
+  gate_demux(&cd, &s0, out2, out3);
+  // int ab = gate_demux(a_or_b, s0);
+  // int cd = gate_demux(c_or_d, s0);
 
-  int a = ab & 1;
-  int b = (ab >> 1) & 1;
-  int c = cd & 1;
-  int d = (cd >> 1) & 1;
+  // int a = ab & 1;
+  // int b = (ab >> 1) & 1;
+  // int c = cd & 1;
+  // int d = (cd >> 1) & 1;
 
-  int result = a | (b << 1) | (c << 2) | (d << 3);
-  return result;
+  // int result = a | (b << 1) | (c << 2) | (d << 3);
+  // return result;
 }
 
 // 1bit in or gg
