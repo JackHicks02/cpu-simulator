@@ -3,285 +3,509 @@
 #include <stdio.h>
 
 int test_gate_nand() {
-  return gate_nand(1, 1) == 0 && gate_nand(1, 0) == 1 && gate_nand(0, 1) == 1 &&
-         gate_nand(0, 0) == 1;
+  u8 a, b, out;
+
+  a = 1;
+  b = 1;
+  gate_nand(&a, &b, &out);
+  if (out != 0)
+    return 0;
+
+  a = 1;
+  b = 0;
+  gate_nand(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  a = 0;
+  b = 1;
+  gate_nand(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  a = 0;
+  b = 0;
+  gate_nand(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  return 1; // All tests passed
 }
 
-int test_gate_not() { return gate_not(1) == 0 && gate_not(0) == 1; }
+int test_gate_not() {
+  u8 a, out;
+
+  a = 1;
+  gate_not(&a, &out);
+  if (out != 0)
+    return 0;
+
+  a = 0;
+  gate_not(&a, &out);
+  if (out != 1)
+    return 0;
+
+  return 1; // All tests passed
+}
 
 int test_gate_and() {
-  return gate_and(1, 1) == 1 && gate_and(1, 0) == 0 && gate_and(0, 1) == 0 &&
-         gate_and(0, 0) == 0;
+  u8 a, b, out;
+
+  a = 1;
+  b = 1;
+  gate_and(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  a = 1;
+  b = 0;
+  gate_and(&a, &b, &out);
+  if (out != 0)
+    return 0;
+
+  a = 0;
+  b = 1;
+  gate_and(&a, &b, &out);
+  if (out != 0)
+    return 0;
+
+  a = 0;
+  b = 0;
+  gate_and(&a, &b, &out);
+  if (out != 0)
+    return 0;
+
+  return 1; // All tests passed
 }
 
 int test_gate_or() {
-  return gate_or(1, 1) == 1 && gate_or(1, 0) == 1 && gate_or(0, 1) == 1 &&
-         gate_or(0, 0) == 0;
+  u8 a, b, out;
+
+  a = 1;
+  b = 1;
+  gate_or(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  a = 1;
+  b = 0;
+  gate_or(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  a = 0;
+  b = 1;
+  gate_or(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  a = 0;
+  b = 0;
+  gate_or(&a, &b, &out);
+  if (out != 0)
+    return 0;
+
+  return 1; // All tests passed
 }
 
 int test_gate_xor() {
-  return gate_xor(1, 1) == 0 && gate_xor(1, 0) == 1 && gate_xor(0, 1) == 1 &&
-         gate_xor(0, 0) == 0;
+  u8 a, b, out;
+
+  a = 1;
+  b = 1;
+  gate_xor(&a, &b, &out);
+  if (out != 0)
+    return 0;
+
+  a = 1;
+  b = 0;
+  gate_xor(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  a = 0;
+  b = 1;
+  gate_xor(&a, &b, &out);
+  if (out != 1)
+    return 0;
+
+  a = 0;
+  b = 0;
+  gate_xor(&a, &b, &out);
+  if (out != 0)
+    return 0;
+
+  return 1; // All tests passed
 }
 
 int test_gate_mux() {
-  return gate_mux(0, 1, 0) == 0 && gate_mux(0, 1, 1) == 1 &&
-         gate_mux(1, 0, 0) == 1 && gate_mux(1, 0, 1) == 0;
+  u8 a, b, sel, out;
+
+  a = 0;
+  b = 1;
+  sel = 0;
+  gate_mux(&a, &b, &sel, &out);
+  if (out != 0)
+    return 0;
+
+  a = 0;
+  b = 1;
+  sel = 1;
+  gate_mux(&a, &b, &sel, &out);
+  if (out != 1)
+    return 0;
+
+  a = 1;
+  b = 0;
+  sel = 0;
+  gate_mux(&a, &b, &sel, &out);
+  if (out != 1)
+    return 0;
+
+  a = 1;
+  b = 0;
+  sel = 1;
+  gate_mux(&a, &b, &sel, &out);
+  if (out != 0)
+    return 0;
+
+  return 1; // All tests passed
 }
 
 int test_gate_demux() {
-  return gate_demux(1, 0) == 1 && gate_demux(1, 1) == 0b10 &&
-         gate_demux(0, 0) == 0 && gate_demux(0, 1) == 0;
+  u8 in, sel, out0, out1;
+
+  in = 1;
+  sel = 0;
+  gate_demux(&in, &sel, &out0, &out1);
+  if (out0 != 1 || out1 != 0)
+    return 0;
+
+  in = 1;
+  sel = 1;
+  gate_demux(&in, &sel, &out0, &out1);
+  if (out0 != 0 || out1 != 1)
+    return 0;
+
+  in = 0;
+  sel = 0;
+  gate_demux(&in, &sel, &out0, &out1);
+  if (out0 != 0 || out1 != 0)
+    return 0;
+
+  in = 0;
+  sel = 1;
+  gate_demux(&in, &sel, &out0, &out1);
+  if (out0 != 0 || out1 != 0)
+    return 0;
+
+  return 1; // All tests passed
 }
 
 int test_gate_not16() {
+  u16 in, out;
+
   for (int i = 0; i <= 0xFFFF; i++) {
-    // must mask to 16 bits or it won't be equal
-    if (gate_not16(i) != ((~i) & 0xFFFF)) {
+    in = (u16)i; // Ensure `in` is a 16-bit value
+    gate_not16(&in, &out);
+    if (out != ((~i) & 0xFFFF)) {
       print_binary(i, 16);
-      print_binary(gate_not16(i), 16);
+      print_binary(out, 16);
       return 0;
     }
   }
   return 1;
 }
-
 // This can't be tested properly because the time complexity using the full
 // or_16 and iterating it through this is n^3
 int test_gate_or16() {
-  for (int a = 0; a <= 0xFF; a++) {
-    for (int b = 0; b <= 0xFF; b++) {
-      if (gate_or16(a, b) != ((a | b) & 0xFFFF)) {
+  u16 a, b, out;
+
+  for (int i = 0; i <= 0xFF; i++) {
+    for (int j = 0; j <= 0xFF; j++) {
+      a = (u16)i;
+      b = (u16)j;
+      gate_or16(&a, &b, &out);
+      if (out != ((a | b) & 0xFFFF)) {
         return 0;
       }
     }
   }
-  for (int a = 0xFF00; a <= 0xFFFF; a++) {
-    for (int b = 0xFF00; b <= 0xFFFF; b++) {
-      if (gate_or16(a, b) != ((a | b) & 0xFFFF)) {
+
+  for (int i = 0xFF00; i <= 0xFFFF; i++) {
+    for (int j = 0xFF00; j <= 0xFFFF; j++) {
+      a = (u16)i;
+      b = (u16)j;
+      gate_or16(&a, &b, &out);
+      if (out != ((a | b) & 0xFFFF)) {
         return 0;
       }
     }
   }
-  return 1;
+
+  return 1; // All tests passed
 }
 
 int test_gate_and16() {
-  for (int a = 0; a <= 0xFF; a++) {
-    for (int b = 0; b <= 0xFF; b++) {
-      if (gate_and16(a, b) != ((a & b) & 0xFFFF)) {
+  u16 a, b, out;
+
+  for (int i = 0; i <= 0xFF; i++) {
+    for (int j = 0; j <= 0xFF; j++) {
+      a = (u16)i;
+      b = (u16)j;
+      gate_and16(&a, &b, &out);
+      if (out != ((a & b) & 0xFFFF)) {
         return 0;
       }
     }
   }
-  for (int a = 0xFF00; a <= 0xFFFF; a++) {
-    for (int b = 0xFF00; b <= 0xFFFF; b++) {
-      if (gate_and16(a, b) != ((a & b) & 0xFFFF)) {
+
+  for (int i = 0xFF00; i <= 0xFFFF; i++) {
+    for (int j = 0xFF00; j <= 0xFFFF; j++) {
+      a = (u16)i;
+      b = (u16)j;
+      gate_and16(&a, &b, &out);
+      if (out != ((a & b) & 0xFFFF)) {
         return 0;
       }
     }
   }
-  return 1;
+
+  return 1; // All tests passed
 }
 
 int test_gate_mux16() {
-  int max = 0xFFFF;
-  int min = 0;
+  u16 a, b, out;
+  u8 sel;
 
-  if (gate_mux16(max, min, 1) != min) {
+  a = 0xFFFF;
+  b = 0x0000;
+  sel = 1;
+  gate_mux16(&a, &b, &sel, &out);
+  if (out != b) {
     return 0;
   }
-  if (gate_mux16(max, min, 0) != max) {
+
+  a = 0xFFFF;
+  b = 0x0000;
+  sel = 0;
+  gate_mux16(&a, &b, &sel, &out);
+  if (out != a) {
     return 0;
   }
 
-  return 1;
+  return 1; // All tests passed
 }
 
 int test_gate_mux4way16() {
-  int a, b = 0, c = 0, d = 0;
-  a = 0b1010101;
-  int result = 0;
+    u16 a, b, c, d, out;
+    u8 sel;
 
-  result = gate_mux4way16(a, b, c, d, 0);
-  if (result != a) {
-    return 0;
-  }
-  a = 0;
-  b = 0b1101101;
-
-  result = gate_mux4way16(a, b, c, d, 1);
-  if (result != b) {
-    return 0;
-  }
-  b = 0;
-  c = 0b0100101;
-
-  result = gate_mux4way16(a, b, c, d, 0b10);
-  if (result != c) {
-    return 0;
-  }
-  c = 0;
-  d = 0b10111011;
-
-  result = gate_mux4way16(a, b, c, d, 0b11);
-  if (result != d) {
-    return 0;
-  }
-  d = 0;
-
-  for (int i = 0; i < 4; i++)
-    if (gate_mux4way16(a, b, c, d, i) != 0) {
-      return 0;
+    a = 0b1010101; b = 0; c = 0; d = 0;
+    sel = 0;
+    gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+    if (out != a) {
+        return 0;
     }
 
-  return 1;
+    a = 0; b = 0b1101101; c = 0; d = 0;
+    sel = 1;
+    gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+    if (out != b) {
+        return 0;
+    }
+
+    a = 0; b = 0; c = 0b0100101; d = 0;
+    sel = 0b10;
+    gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+    if (out != c) {
+        return 0;
+    }
+
+    a = 0; b = 0; c = 0; d = 0b10111011;
+    sel = 0b11;
+    gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+    if (out != d) {
+        return 0;
+    }
+
+    a = 0; b = 0; c = 0; d = 0;
+    for (int i = 0; i < 4; i++) {
+        sel = (u8)i;
+        gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+        if (out != 0) {
+            return 0;
+        }
+    }
+
+    return 1; // All tests passed
 }
 
+
 int test_gate_mux8way16() {
-  int a, b, c, d, e, f, g, h;
-  int result = 0;
+    u16 a, b, c, d, e, f, g, h, out;
+    u8 sel;
 
-  a = 0b1010101010101010;
-  b = 0b0101010101010101;
-  c = 0b1111000011110000;
-  d = 0b0000111100001111;
-  e = 0b0011001100110011;
-  f = 0b1100110011001100;
-  g = 0b1111111100000000;
-  h = 0b0000000011111111;
+    a = 0b1010101010101010;
+    b = 0b0101010101010101;
+    c = 0b1111000011110000;
+    d = 0b0000111100001111;
+    e = 0b0011001100110011;
+    f = 0b1100110011001100;
+    g = 0b1111111100000000;
+    h = 0b0000000011111111;
 
-  // Test all selector values
-  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b000);
-  if (result != a) {
-    return 0;
-  }
-
-  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b001);
-  if (result != b) {
-    return 0;
-  }
-
-  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b010);
-  if (result != c) {
-    return 0;
-  }
-
-  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b011);
-  if (result != d) {
-    return 0;
-  }
-
-  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b100);
-  if (result != e) {
-    return 0;
-  }
-
-  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b101);
-  if (result != f) {
-    return 0;
-  }
-
-  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b110);
-  if (result != g) {
-    return 0;
-  }
-
-  result = gate_mux8way16(a, b, c, d, e, f, g, h, 0b111);
-  if (result != h) {
-    return 0;
-  }
-
-  // Test with all inputs set to 0
-  a = b = c = d = e = f = g = h = 0;
-  for (int i = 0; i < 8; i++) {
-    if (gate_mux8way16(a, b, c, d, e, f, g, h, i) != 0) {
-      return 0;
+    sel = 0b000;
+    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+    if (out != a) {
+        return 0;
     }
-  }
 
-  return 1;
+    sel = 0b001;
+    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+    if (out != b) {
+        return 0;
+    }
+
+    sel = 0b010;
+    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+    if (out != c) {
+        return 0;
+    }
+
+    sel = 0b011;
+    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+    if (out != d) {
+        return 0;
+    }
+
+    sel = 0b100;
+    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+    if (out != e) {
+        return 0;
+    }
+
+    sel = 0b101;
+    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+    if (out != f) {
+        return 0;
+    }
+
+    sel = 0b110;
+    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+    if (out != g) {
+        return 0;
+    }
+
+    sel = 0b111;
+    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+    if (out != h) {
+        return 0;
+    }
+
+    a = b = c = d = e = f = g = h = 0;
+    for (int i = 0; i < 8; i++) {
+        sel = (u8)i;
+        gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+        if (out != 0) {
+            return 0;
+        }
+    }
+
+    return 1; // All tests passed
 }
 
 int test_gate_demux4way() {
-  int result;
+    u8 in, sel, out0, out1, out2, out3;
 
-  result = gate_demux4way(1, 0b00);
-  if (result != 0b0001) {
-    printf("a\n");
-    return 0;
-  }
+    in = 1; sel = 0b00;
+    gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
+    if (out0 != 1 || out1 != 0 || out2 != 0 || out3 != 0) {
+        return 0;
+    }
 
-  result = gate_demux4way(1, 0b01);
-  if (result != 0b0010) {
-    return 0;
-  }
+    in = 1; sel = 0b01;
+    gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
+    if (out0 != 0 || out1 != 1 || out2 != 0 || out3 != 0) {
+        return 0;
+    }
 
-  result = gate_demux4way(1, 0b10);
-  if (result != 0b0100) {
-    return 0;
-  }
+    in = 1; sel = 0b10;
+    gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
+    if (out0 != 0 || out1 != 0 || out2 != 1 || out3 != 0) {
+        return 0;
+    }
 
-  result = gate_demux4way(1, 0b11);
-  if (result != 0b1000) {
-    return 0;
-  }
+    in = 1; sel = 0b11;
+    gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
+    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 1) {
+        return 0;
+    }
 
-  return 1;
+    return 1; // All tests passed
 }
 
+
 int test_gate_demux8way() {
-  int result;
+    u8 in, sel, out0, out1, out2, out3, out4, out5, out6, out7;
 
-  result = gate_demux8way(1, 0b000);
-  if (result != 0b00000001) {
-    printf("Test failed: sel=0b000, expected 0b00000001, got 0b%08b\n", result);
-    return 0;
-  }
+    in = 1; sel = 0b000;
+    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
+    if (out0 != 1 || out1 != 0 || out2 != 0 || out3 != 0 || 
+        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 0) {
+        return 0;
+    }
 
-  result = gate_demux8way(1, 0b001);
-  if (result != 0b00000010) {
-    printf("Test failed: sel=0b001, expected 0b00000010, got 0b%08b\n", result);
-    return 0;
-  }
+    in = 1; sel = 0b001;
+    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
+    if (out0 != 0 || out1 != 1 || out2 != 0 || out3 != 0 || 
+        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 0) {
+        return 0;
+    }
 
-  result = gate_demux8way(1, 0b010);
-  if (result != 0b00000100) {
-    printf("Test failed: sel=0b010, expected 0b00000100, got 0b%08b\n", result);
-    return 0;
-  }
+    in = 1; sel = 0b010;
+    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
+    if (out0 != 0 || out1 != 0 || out2 != 1 || out3 != 0 || 
+        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 0) {
+        return 0;
+    }
 
-  result = gate_demux8way(1, 0b011);
-  if (result != 0b00001000) {
-    printf("Test failed: sel=0b011, expected 0b00001000, got 0b%08b\n", result);
-    return 0;
-  }
+    in = 1; sel = 0b011;
+    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
+    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 1 || 
+        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 0) {
+        return 0;
+    }
 
-  result = gate_demux8way(1, 0b100);
-  if (result != 0b00010000) {
-    printf("Test failed: sel=0b100, expected 0b00010000, got 0b%08b\n", result);
-    return 0;
-  }
+    in = 1; sel = 0b100;
+    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
+    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || 
+        out4 != 1 || out5 != 0 || out6 != 0 || out7 != 0) {
+        return 0;
+    }
 
-  result = gate_demux8way(1, 0b101);
-  if (result != 0b00100000) {
-    printf("Test failed: sel=0b101, expected 0b00100000, got 0b%08b\n", result);
-    return 0;
-  }
+    in = 1; sel = 0b101;
+    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
+    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || 
+        out4 != 0 || out5 != 1 || out6 != 0 || out7 != 0) {
+        return 0;
+    }
 
-  result = gate_demux8way(1, 0b110);
-  if (result != 0b01000000) {
-    printf("Test failed: sel=0b110, expected 0b01000000, got 0b%08b\n", result);
-    return 0;
-  }
+    in = 1; sel = 0b110;
+    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
+    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || 
+        out4 != 0 || out5 != 0 || out6 != 1 || out7 != 0) {
+        return 0;
+    }
 
-  result = gate_demux8way(1, 0b111);
-  if (result != 0b10000000) {
-    printf("Test failed: sel=0b111, expected 0b10000000, got 0b%08b\n", result);
-    return 0;
-  }
+    in = 1; sel = 0b111;
+    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
+    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || 
+        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 1) {
+        return 0;
+    }
 
-  return 1;
+    return 1; // All tests passed
 }
 
 void run_tests() {
