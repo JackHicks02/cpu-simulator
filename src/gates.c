@@ -1,5 +1,6 @@
 #include "../include/gates.h"
 #include "../include/get_bit.h"
+#include <stdio.h>
 
 void gate_nand(u8 *a, u8 *b, u8 *out) {
   *out = ~(*a & *b) & 1;

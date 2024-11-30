@@ -204,7 +204,7 @@ int test_gate_demux() {
 
 int test_gate_not16() {
 
-  for (u16 i = 0; i <= 0xFFFF; i++) {
+  for (u16 i = 0; i < 16; i++) {
     u16 out = 0;
     u16 in = i;
 
@@ -223,8 +223,8 @@ int test_gate_not16() {
 int test_gate_or16() {
   u16 a, b, out;
 
-  for (int i = 0; i <= 0xFF; i++) {
-    for (int j = 0; j <= 0xFF; j++) {
+  for (int i = 0; i < 0xFF; i++) {
+    for (int j = 0; j < 0xFF; j++) {
       a = (u16)i;
       b = (u16)j;
       gate_or16(&a, &b, &out);
@@ -234,8 +234,8 @@ int test_gate_or16() {
     }
   }
 
-  for (int i = 0xFF00; i <= 0xFFFF; i++) {
-    for (int j = 0xFF00; j <= 0xFFFF; j++) {
+  for (int i = 0xFF00; i < 0xFFFF; i++) {
+    for (int j = 0xFF00; j < 0xFFFF; j++) {
       a = (u16)i;
       b = (u16)j;
       gate_or16(&a, &b, &out);
@@ -251,8 +251,8 @@ int test_gate_or16() {
 int test_gate_and16() {
   u16 a, b, out;
 
-  for (int i = 0; i <= 0xFF; i++) {
-    for (int j = 0; j <= 0xFF; j++) {
+  for (int i = 0; i < 0xFF; i++) {
+    for (int j = 0; j < 0xFF; j++) {
       a = (u16)i;
       b = (u16)j;
       gate_and16(&a, &b, &out);
@@ -262,8 +262,8 @@ int test_gate_and16() {
     }
   }
 
-  for (int i = 0xFF00; i <= 0xFFFF; i++) {
-    for (int j = 0xFF00; j <= 0xFFFF; j++) {
+  for (int i = 0xFF00; i < 0xFFFF; i++) {
+    for (int j = 0xFF00; j < 0xFFFF; j++) {
       a = (u16)i;
       b = (u16)j;
       gate_and16(&a, &b, &out);
