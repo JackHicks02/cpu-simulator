@@ -62,7 +62,7 @@ void gate_mux(u8 *a, u8 *b, u8 *sel, u8 *out) {
   gate_and(a, &notSel, &AxNotSel);
 
   u8 BxSel;
-  gate_and(a, b, &BxSel);
+  gate_and(b, sel, &BxSel);
 
   gate_or(&AxNotSel, &BxSel, out);
 }
