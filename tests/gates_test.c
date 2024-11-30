@@ -169,7 +169,7 @@ int test_gate_mux() {
   if (out != 0)
     return 0;
 
-  return 1; // All tests passed
+  return 1;
 }
 
 int test_gate_demux() {
@@ -203,12 +203,13 @@ int test_gate_demux() {
 }
 
 int test_gate_not16() {
-  u16 in, out;
 
-  for (int i = 0; i <= 0xFFFF; i++) {
-    in = (u16)i; // Ensure `in` is a 16-bit value
+  for (u16 i = 0; i <= 0xFFFF; i++) {
+    u16 out = 0;
+    u16 in = i;
+
     gate_not16(&in, &out);
-    if (out != ((~i) & 0xFFFF)) {
+    if (out != (~in & 0xFFFF)) {
       print_binary(i, 16);
       print_binary(out, 16);
       return 0;
@@ -216,6 +217,7 @@ int test_gate_not16() {
   }
   return 1;
 }
+
 // This can't be tested properly because the time complexity using the full
 // or_16 and iterating it through this is n^3
 int test_gate_or16() {
@@ -298,214 +300,247 @@ int test_gate_mux16() {
 }
 
 int test_gate_mux4way16() {
-    u16 a, b, c, d, out;
-    u8 sel;
+  u16 a, b, c, d, out;
+  u8 sel;
 
-    a = 0b1010101; b = 0; c = 0; d = 0;
-    sel = 0;
+  a = 0b1010101;
+  b = 0;
+  c = 0;
+  d = 0;
+  sel = 0;
+  gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+  if (out != a) {
+    return 0;
+  }
+
+  a = 0;
+  b = 0b1101101;
+  c = 0;
+  d = 0;
+  sel = 1;
+  gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+  if (out != b) {
+    return 0;
+  }
+
+  a = 0;
+  b = 0;
+  c = 0b0100101;
+  d = 0;
+  sel = 0b10;
+  gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+  if (out != c) {
+    return 0;
+  }
+
+  a = 0;
+  b = 0;
+  c = 0;
+  d = 0b10111011;
+  sel = 0b11;
+  gate_mux4way16(&a, &b, &c, &d, &sel, &out);
+  if (out != d) {
+    return 0;
+  }
+
+  a = 0;
+  b = 0;
+  c = 0;
+  d = 0;
+  for (int i = 0; i < 4; i++) {
+    sel = (u8)i;
     gate_mux4way16(&a, &b, &c, &d, &sel, &out);
-    if (out != a) {
-        return 0;
+    if (out != 0) {
+      return 0;
     }
+  }
 
-    a = 0; b = 0b1101101; c = 0; d = 0;
-    sel = 1;
-    gate_mux4way16(&a, &b, &c, &d, &sel, &out);
-    if (out != b) {
-        return 0;
-    }
-
-    a = 0; b = 0; c = 0b0100101; d = 0;
-    sel = 0b10;
-    gate_mux4way16(&a, &b, &c, &d, &sel, &out);
-    if (out != c) {
-        return 0;
-    }
-
-    a = 0; b = 0; c = 0; d = 0b10111011;
-    sel = 0b11;
-    gate_mux4way16(&a, &b, &c, &d, &sel, &out);
-    if (out != d) {
-        return 0;
-    }
-
-    a = 0; b = 0; c = 0; d = 0;
-    for (int i = 0; i < 4; i++) {
-        sel = (u8)i;
-        gate_mux4way16(&a, &b, &c, &d, &sel, &out);
-        if (out != 0) {
-            return 0;
-        }
-    }
-
-    return 1; // All tests passed
+  return 1; // All tests passed
 }
 
-
 int test_gate_mux8way16() {
-    u16 a, b, c, d, e, f, g, h, out;
-    u8 sel;
+  u16 a, b, c, d, e, f, g, h, out;
+  u8 sel;
 
-    a = 0b1010101010101010;
-    b = 0b0101010101010101;
-    c = 0b1111000011110000;
-    d = 0b0000111100001111;
-    e = 0b0011001100110011;
-    f = 0b1100110011001100;
-    g = 0b1111111100000000;
-    h = 0b0000000011111111;
+  a = 0b1010101010101010;
+  b = 0b0101010101010101;
+  c = 0b1111000011110000;
+  d = 0b0000111100001111;
+  e = 0b0011001100110011;
+  f = 0b1100110011001100;
+  g = 0b1111111100000000;
+  h = 0b0000000011111111;
 
-    sel = 0b000;
+  sel = 0b000;
+  gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+  if (out != a) {
+    return 0;
+  }
+
+  sel = 0b001;
+  gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+  if (out != b) {
+    return 0;
+  }
+
+  sel = 0b010;
+  gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+  if (out != c) {
+    return 0;
+  }
+
+  sel = 0b011;
+  gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+  if (out != d) {
+    return 0;
+  }
+
+  sel = 0b100;
+  gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+  if (out != e) {
+    return 0;
+  }
+
+  sel = 0b101;
+  gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+  if (out != f) {
+    return 0;
+  }
+
+  sel = 0b110;
+  gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+  if (out != g) {
+    return 0;
+  }
+
+  sel = 0b111;
+  gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
+  if (out != h) {
+    return 0;
+  }
+
+  a = b = c = d = e = f = g = h = 0;
+  for (int i = 0; i < 8; i++) {
+    sel = (u8)i;
     gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-    if (out != a) {
-        return 0;
+    if (out != 0) {
+      return 0;
     }
+  }
 
-    sel = 0b001;
-    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-    if (out != b) {
-        return 0;
-    }
-
-    sel = 0b010;
-    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-    if (out != c) {
-        return 0;
-    }
-
-    sel = 0b011;
-    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-    if (out != d) {
-        return 0;
-    }
-
-    sel = 0b100;
-    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-    if (out != e) {
-        return 0;
-    }
-
-    sel = 0b101;
-    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-    if (out != f) {
-        return 0;
-    }
-
-    sel = 0b110;
-    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-    if (out != g) {
-        return 0;
-    }
-
-    sel = 0b111;
-    gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-    if (out != h) {
-        return 0;
-    }
-
-    a = b = c = d = e = f = g = h = 0;
-    for (int i = 0; i < 8; i++) {
-        sel = (u8)i;
-        gate_mux8way16(&a, &b, &c, &d, &e, &f, &g, &h, &sel, &out);
-        if (out != 0) {
-            return 0;
-        }
-    }
-
-    return 1; // All tests passed
+  return 1; // All tests passed
 }
 
 int test_gate_demux4way() {
-    u8 in, sel, out0, out1, out2, out3;
+  u8 in, sel, out0, out1, out2, out3;
 
-    in = 1; sel = 0b00;
-    gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
-    if (out0 != 1 || out1 != 0 || out2 != 0 || out3 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b00;
+  gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
+  if (out0 != 1 || out1 != 0 || out2 != 0 || out3 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b01;
-    gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
-    if (out0 != 0 || out1 != 1 || out2 != 0 || out3 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b01;
+  gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
+  if (out0 != 0 || out1 != 1 || out2 != 0 || out3 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b10;
-    gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
-    if (out0 != 0 || out1 != 0 || out2 != 1 || out3 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b10;
+  gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
+  if (out0 != 0 || out1 != 0 || out2 != 1 || out3 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b11;
-    gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
-    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 1) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b11;
+  gate_demux4way(&in, &sel, &out0, &out1, &out2, &out3);
+  if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 1) {
+    return 0;
+  }
 
-    return 1; // All tests passed
+  return 1; // All tests passed
 }
 
-
 int test_gate_demux8way() {
-    u8 in, sel, out0, out1, out2, out3, out4, out5, out6, out7;
+  u8 in, sel, out0, out1, out2, out3, out4, out5, out6, out7;
 
-    in = 1; sel = 0b000;
-    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
-    if (out0 != 1 || out1 != 0 || out2 != 0 || out3 != 0 || 
-        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b000;
+  gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6,
+                 &out7);
+  if (out0 != 1 || out1 != 0 || out2 != 0 || out3 != 0 || out4 != 0 ||
+      out5 != 0 || out6 != 0 || out7 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b001;
-    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
-    if (out0 != 0 || out1 != 1 || out2 != 0 || out3 != 0 || 
-        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b001;
+  gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6,
+                 &out7);
+  if (out0 != 0 || out1 != 1 || out2 != 0 || out3 != 0 || out4 != 0 ||
+      out5 != 0 || out6 != 0 || out7 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b010;
-    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
-    if (out0 != 0 || out1 != 0 || out2 != 1 || out3 != 0 || 
-        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b010;
+  gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6,
+                 &out7);
+  if (out0 != 0 || out1 != 0 || out2 != 1 || out3 != 0 || out4 != 0 ||
+      out5 != 0 || out6 != 0 || out7 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b011;
-    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
-    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 1 || 
-        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b011;
+  gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6,
+                 &out7);
+  if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 1 || out4 != 0 ||
+      out5 != 0 || out6 != 0 || out7 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b100;
-    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
-    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || 
-        out4 != 1 || out5 != 0 || out6 != 0 || out7 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b100;
+  gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6,
+                 &out7);
+  if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || out4 != 1 ||
+      out5 != 0 || out6 != 0 || out7 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b101;
-    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
-    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || 
-        out4 != 0 || out5 != 1 || out6 != 0 || out7 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b101;
+  gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6,
+                 &out7);
+  if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || out4 != 0 ||
+      out5 != 1 || out6 != 0 || out7 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b110;
-    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
-    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || 
-        out4 != 0 || out5 != 0 || out6 != 1 || out7 != 0) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b110;
+  gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6,
+                 &out7);
+  if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || out4 != 0 ||
+      out5 != 0 || out6 != 1 || out7 != 0) {
+    return 0;
+  }
 
-    in = 1; sel = 0b111;
-    gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6, &out7);
-    if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || 
-        out4 != 0 || out5 != 0 || out6 != 0 || out7 != 1) {
-        return 0;
-    }
+  in = 1;
+  sel = 0b111;
+  gate_demux8way(&in, &sel, &out0, &out1, &out2, &out3, &out4, &out5, &out6,
+                 &out7);
+  if (out0 != 0 || out1 != 0 || out2 != 0 || out3 != 0 || out4 != 0 ||
+      out5 != 0 || out6 != 0 || out7 != 1) {
+    return 0;
+  }
 
-    return 1; // All tests passed
+  return 1; // All tests passed
 }
 
 void run_tests() {

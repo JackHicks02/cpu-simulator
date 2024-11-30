@@ -89,7 +89,6 @@ void gate_demux(u8 *in, u8 *sel, u8 *out0, u8 *out1) {
 
 // could be multiple outputs
 void gate_not16(u16 *in, u16 *out) {
-  // int out = 0;
   u16 inVal = *in;
 
   for (int i = 0; i < 16; i++) {
