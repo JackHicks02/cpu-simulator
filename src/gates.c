@@ -7,6 +7,11 @@ void gate_nand(u8 *a, u8 *b, u8 *out) {
   // should probably just mask at outputs
 }
 
+// Combinational circuits, whose outputs don't depend on the clock signal
+// and what has happened previously, unlike sequential circuits,
+// could have stayed functionally pure, as this concept of state would not be
+// required e.g. the ALU
+
 void gate_not(u8 *a, u8 *out) { gate_nand(a, a, out); }
 
 void gate_and(u8 *a, u8 *b, u8 *out) {
@@ -272,18 +277,18 @@ void gate_demux4way(u8 *in, u8 *sel, u8 *out0, u8 *out1, u8 *out2, u8 *out3) {
 }
 
 // 1bit in or gg
-void gate_demux8way(int in, int sel) {
-  int s3 = (sel >> 2) & 1;
+void gate_demux8way(u8 *in, u8 *sel, u8 *out0, u8 *out1, u8 *out2, u8 *out3,
+                    u8 *out4, u8 *out5, u8 *out6, u8 *out7) {
+  u8 selVal = *sel;
 
-  // this is so pointless lmao
-  int abcdefgh = gate_demux4way(in, s3);
+  u8 s3 = (selVal >> 2) & 1;
+  u8 s2 = selVal & 0b11;
+  u8 abcd;
+  u8 efgh;
 
-  int abcd = abcdefgh & 1;
-  int efgh = (abcdefgh >> 1) & 1;
+  gate_demux(in, &s3, &abcd, &efgh);
 
-  int a_b_c_d = gate_demux4way(abcd, (sel)&0b11);
-  int e_f_g_h = gate_demux4way(efgh, (sel)&0b11);
+  gate_demux4way(&abcd, &s2, out0, out1, out2, out3);
 
-  int result = a_b_c_d | (e_f_g_h << 4);
-  return result;
+  gate_demux4way(&efgh, &s2, out4, out5, out6, out7);
 }
